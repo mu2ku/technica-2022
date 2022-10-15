@@ -21,7 +21,7 @@ def check_credit_rating(credit_score):
         return True
     return False
 
-def loan_to_value(loan_amount, down_payment, monthly_payment):
+def loan_to_value(loan_amount, down_payment):
     return (loan_amount - down_payment) / loan_amount
     
 
