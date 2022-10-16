@@ -82,7 +82,7 @@ def addrec():
         cur.execute("""INSERT INTO test (id, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?,?)""",(10003,gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit))
         con.commit()  
         con.close()
-        send_email(request.form['email_address'])
+        # send_email(request.form['email_address'])
         
     return render_template("result.html")
 
