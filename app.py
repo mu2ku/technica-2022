@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-import sqlite3
+import sqlite3, csv
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////db.sqlite3"
@@ -35,11 +35,34 @@ def addrec():
         cur = con.cursor() #establish cursor
         print("Connected to SQLite")
         
-        cur.execute("""INSERT INTO test (id, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?,?)""",(10003,gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit))
+        cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit)")
+        
+        cur.execute("""INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?)""",(gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit))
         con.commit()  
         con.close()
         
         return render_template("index.html")
 
+@app.route('/addbatch', methods=['POST','GET'])
+def addbatch():
+    if request.method == 'POST':
+        f = request.files['file']
+        
+        con = sqlite3.connect("test.db")
+        cur = con.cursor() #establish cursor
+        print("Connected to SQLite")
+        
+        cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit)")
+        
+        insert_query = """INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?)""" 
+        
+        for row in f:
+            print(row)
+            # cur.execute(insert_query,row[1:])
+            # con.commit()
+            # con.close()      
+            
+        return render_template("index.html")
+                
 if __name__ == "__main__":
     app.run(debug=True)

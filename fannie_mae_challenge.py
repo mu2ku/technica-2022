@@ -4,21 +4,17 @@ import sqlite3
 con = sqlite3.connect("test.db") #create connection to db
 cur = con.cursor() #establish cursor
 print("Connected to SQLite")
-
-#function to insert individual info
-def insert_one():
-    cur.execute("""INSERT INTO test VALUES (NULL,1,2,3,4,5,6,7,8,9)""")
-    con.commit()
     
 #function to insert batch file
 def insert_batch(input_file):
-    cur.execute("CREATE TABLE test(id, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit)")
-    insert_query = """INSERT INTO test VALUES (?,?,?,?,?,?,?,?,?,?)""" #code to insert into db
+    cur.execute("CREATE TABLE test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit)")
+    insert_query = """INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?)""" #code to insert into db
     
     with open(input_file, 'r') as file:
         csvreader = csv.reader(file)
+        next(csvreader)
         for row in csvreader:
-            cur.execute(insert_query,row)
+            cur.execute(insert_query,row[1:])
             con.commit()
             
 def check_credit_rating(credit_score):

@@ -3,9 +3,9 @@
 {% block content %}
 <div class="container">
     <h4>Upload file</h4>
-    <form method="POST" action="/" enctype="multipart/form-data">
+    <form method="POST" action="{{ url_for('addbatch') }}" enctype="multipart/form-data">
         <input type="file" name="file">
-        <a class="waves-effect waves-light btn">Submit</a>
+        <button class="waves-effect waves-light btn">Submit</a>
     </form>
 </div>
 
