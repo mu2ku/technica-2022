@@ -4,7 +4,7 @@
 <div class="container">
     <h4>Upload file</h4>
     <p class="note">File will be processed to batch-determine approval and automatically download.</p>
-    <form method="POST" action="employee" enctype="multipart/form-data">
+    <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
         <input type="file" id="file" name="file">
         <button class="btn waves-effect waves-light" type="submit">Submit</button>
         <!-- <button>Submit</button> -->
