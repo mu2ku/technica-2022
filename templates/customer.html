@@ -1,49 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action = "{{ url_for('addrec') }}" method ="POST">
-<div class="container">
+<div class="header text-center">
+  <h4>Let's get our own place!</br>Are you ready?</h4>
+</div>
+<form action="{{ url_for('addrec') }}" method="POST">
+  <div class="container">
     <div class="form">
+      <div class="row">
+        <!-- <div class="input-field col s6">
+          <input name="first_name" id="first_name" type="text" class="validate">
+          <label class="active" for="first_name">First name</label>
+        </div> -->
         <div class="row">
-          <div class="input-field col s12">
-          <input name="loan_amount" id="loan_amount" type="text" class="validate">
-          <label class="active" for="credit_score">Credit score</label>
-        </div>
-              <div class="input-field col s12">
-                <input name="credit_score" id="credit_score" type="text" class="validate">
-                <label class="active" for="loan_amount">Loan amount</label>
-              </div>
-              <div class="input-field col s12">
-                <input name="down_payment" id="down_payment" type="text" class="validate">
-                <label class="active" for="down_payment">Down payment</label>
-              </div>
-            <div class="input-field col s12">
-              <input name="monthly_income" id="monthly_income" type="text" class="validate">
-              <label class="active" for="monthly_income">Gross monthly income</label>
-            </div>
-            <div class="input-field col s12">
-              <input name="credit_card_payment" id="credit_card_payment" type="text" class="validate">
-              <label class="active" for="credit_card_payment">Credit card payment</label>
-            </div>
-            <div class="input-field col s12">
-              <input name="car_payment" id="car_payment" type="text" class="validate">
-              <label class="active" for="car_payment">Car payment</label>
-            </div>
-            <div class="input-field col s12">
-              <input name="student_loan_payment" id="student_loan_payment" type="text" class="validate">
-              <label class="active" for="student_loan_payment">Student loan payment</label>
-            </div>
-            <div class="input-field col s12">
-              <input name="appraised_value" id="appraised_value" type="text" class="validate">
-              <label class="active" for="appraised_value">Appraised property value</label>
-            </div>
-            <div class="input-field col s12">
-              <input name="monthly_mortgage" id="monthly_mortgage" type="text" class="validate">
-              <label class="active" for="monthly_mortgage">Monthly mortgage payment</label>
-            </div>
-            <button class="waves-effect waves-light btn" type="submit">Submit</button>
-          </form>
+          <div class="input-field col s6">
+            <input name="email_address" id="email_address" type="text" class="validate">
+            <label class="active" for="email_address">Email</label>
           </div>
-    </div>
+          <div class="input-field col s6">
+            <input name="loan_amount" id="loan_amount" type="text" class="validate">
+            <label class="active" for="credit_score">Credit score</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="credit_score" id="credit_score" type="text" class="validate">
+            <label class="active" for="loan_amount">Loan amount</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="down_payment" id="down_payment" type="text" class="validate">
+            <label class="active" for="down_payment">Down payment</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="monthly_income" id="monthly_income" type="text" class="validate">
+            <label class="active" for="monthly_income">Gross monthly income</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="credit_card_payment" id="credit_card_payment" type="text" class="validate">
+            <label class="active" for="credit_card_payment">Credit card payment</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="car_payment" id="car_payment" type="text" class="validate">
+            <label class="active" for="car_payment">Car payment</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="student_loan_payment" id="student_loan_payment" type="text" class="validate">
+            <label class="active" for="student_loan_payment">Student loan payment</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="appraised_value" id="appraised_value" type="text" class="validate">
+            <label class="active" for="appraised_value">Appraised property value</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="monthly_mortgage" id="monthly_mortgage" type="text" class="validate">
+            <label class="active" for="monthly_mortgage">Monthly mortgage payment</label>
+          </div>
+          <div class="submit_area"><button class="waves-effect waves-light btn" type="submit">Submit</button></div>
+</form>
+</div>
+</div>
 </div>
 {% endblock %}

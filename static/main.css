@@ -16,6 +16,21 @@
     width:250px
 }
 
+table {
+    font-size: .7em!important;
+}
+
+button {
+    overflow: hidden;
+}
+
+.header {
+    margin-top: 5%;
+}
+
+.submit_area {
+    text-align: center;
+}
 
 .form {
     width: 500px;
