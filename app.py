@@ -1,10 +1,9 @@
-from django.shortcuts import render
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3, os, csv
 # import pandas as pd
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
-from fannie_mae_challenge import process_csv, is_approved
+from fannie_mae_challenge import process_csv, is_approved, why_not_approved
 # from email_data import send_email
 
 app = Flask(__name__)
@@ -49,8 +48,10 @@ def upload():
                         cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved)")
                     
                         insert_query = """INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved) VALUES (?,?,?,?,?,?,?,?,?,?,?)""" 
-                        
-                        cur.execute(insert_query,row[1:])
+                        values = row[1:]
+                        values.append(is_approved(row))
+                        values.append(why_not_approved(row))
+                        cur.execute(insert_query,values)
                         con.commit() 
     
                 con.close()  
