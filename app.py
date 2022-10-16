@@ -48,10 +48,8 @@ def upload():
                         cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved)")
                     
                         insert_query = """INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved) VALUES (?,?,?,?,?,?,?,?,?,?,?)""" 
-                        values = row[1:]
-                        values.append(is_approved(row))
-                        values.append(why_not_approved(row))
-                        cur.execute(insert_query,values)
+        
+                        cur.execute(insert_query,row[1:])
                         con.commit() 
     
                 con.close()  
@@ -88,13 +86,21 @@ def addrec():
         monthly_mortage = request.form['monthly_mortgage'] 
         credit = request.form['credit_score'] 
         
+        if is_approved([None, str(gross_monthly_income), str(credit_card_payment), str(car_payment), str(student_loan), str(appraised_value), str(down_payment), str(loan_amount), str(monthly_mortage), str(credit)]):
+            is_approved_value = "Y"
+        else:
+            is_approved_value = "N"
+            
+        why_not_approved_value = why_not_approved([None, str(gross_monthly_income), str(credit_card_payment), str(car_payment), str(student_loan), str(appraised_value), str(down_payment), str(loan_amount), str(monthly_mortage), str(credit)])
+        
         con = sqlite3.connect("test.db")
         cur = con.cursor() #establish cursor
         print("Connected to SQLite")
         
-        cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit)")
+        cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved)")
         
-        cur.execute("""INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?)""",(gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit))
+        cur.execute("""INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",(gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, is_approved_value, why_not_approved_value ))
+        
         con.commit()  
         con.close()
         # send_email(request.form['email_address'])
