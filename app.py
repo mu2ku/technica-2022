@@ -1,11 +1,11 @@
+from django.shortcuts import render
 from flask_sqlalchemy import SQLAlchemy
-import sqlite3
-import os
+import sqlite3, os, csv
 # import pandas as pd
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from fannie_mae_challenge import process_csv, is_approved
-from email_data import send_email
+# from email_data import send_email
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////db.sqlite3"
@@ -36,13 +36,25 @@ def upload():
             new_filename = f'{name}.csv'
             save_location = os.path.join('input', new_filename)
             file.save(save_location)
-
             output_file = process_csv(save_location, name)
-            # data = pd.read_csv(os.path.join('output', output_file))
-            return send_from_directory('output', output_file)
-            # return redirect(url_for('download')) #DOWNLOAD
-            # return render_template('table.html', tables=[data.to_html()], titles=[''])
-
+            
+            with open(f"output/{output_file}", 'r') as output_read:
+                csvreader = csv.reader(output_read)
+                next(csvreader)
+                for row in csvreader:
+                        con = sqlite3.connect("test.db")
+                        cur = con.cursor() #establish cursor
+                        print("Connected to SQLite")
+                
+                        cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved)")
+                    
+                        insert_query = """INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit, ApprovedOrNot, WhyNotApproved) VALUES (?,?,?,?,?,?,?,?,?,?,?)""" 
+                        
+                        cur.execute(insert_query,row[1:])
+                        con.commit() 
+    
+                con.close()  
+                return send_from_directory('output', output_file)
 
     return render_template('employee.html')
 
@@ -87,27 +99,6 @@ def addrec():
         # send_email(request.form['email_address'])
         
     return render_template("result.html")
-
-@app.route('/addbatch', methods=['POST','GET'])
-def addbatch():
-    if request.method == 'POST':
-        f = request.files['file']
-        
-        con = sqlite3.connect("test.db")
-        cur = con.cursor() #establish cursor
-        print("Connected to SQLite")
-        
-        cur.execute("CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit)")
-        
-        insert_query = """INSERT INTO test (gross_monthly_income, credit_card_payment, car_payment, student_loan, appraised_value, down_payment, loan_amount, monthly_mortage, credit) VALUES (?,?,?,?,?,?,?,?,?)""" 
-        
-        for row in f:
-            print(row)
-            # cur.execute(insert_query,row[1:])
-            # con.commit()
-            # con.close()      
-            
-        return render_template("index.html")
                 
 if __name__ == "__main__":
     app.run(debug=True)
